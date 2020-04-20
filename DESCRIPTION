@@ -1,0 +1,30 @@
+Package: lakemetrics
+Title: Metriques morphologiques des lacs
+Version: 0.0.1
+Authors@R: 
+    person(given = "Sebastien",
+           family = "Boutry",
+           role = c("aut", "cre"),
+           email = "sebastien.boutry@inrae.fr",
+           comment = c(ORCID = "0000-0001-8046-585X"))
+Description: Calcul les metriques morphologiques sur le lac.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
+RoxygenNote: 7.1.0
+Imports: 
+    magrittr,
+    sf,
+    dplyr,
+    base,
+    data.table,
+    purrr,
+    tidyr,
+    units,
+    udunits2
+Depends: 
+    R (>= 2.10)

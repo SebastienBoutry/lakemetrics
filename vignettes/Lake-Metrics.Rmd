@@ -1,0 +1,146 @@
+---
+title: "Lake Metrics"
+author: "Sébastien Boutry"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{a_start}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Préambule
+
+### Instalation de `{lakemetrics}`
+
+La version du paquet `{lakemetrics}` peut se télécharger via le site Github pour cela on aura besoin du paquet `{remotes}`: 
+
+```{r install, eval=FALSE}
+remotes::install_github("SebastienBoutry/lakemetrics")
+```
+
+### Le paquet `{lakemetrics}`
+
+### Paquets nécessaires pour ce document
+
+Les paquets suivants `{ggplot2}` et `{ggsn}` sont nécessaires pour les réprésentations graphiques.
+
+```{r packages, eval=TRUE, echo=FALSE, warning=FALSE}
+require(ggplot2)
+library(kableExtra)
+require(magrittr)
+require(ggsn)
+require(lakemetrics)
+```
+
+### Quelques définitions
+
+Une masse d'eau (ME) est un lac ou un ensemble de lacs.
+Un bassin versant (BV)
+
+### Présentation du jeu d'exemple
+
+Un lac ayant une forme proche d'un disque (Lac Chauvet).
+
+```{r exemple, echo=FALSE, eval=TRUE}
+data(lac)
+data(bv)
+graph <- ggplot()+
+    geom_sf(data=bv)+
+  geom_sf(data=lac,fill="lightblue")+
+  theme_minimal()
+print(graph)
+```
+
+
+## Morphologie du lac
+
+###
+Classe dans l'ordre décroissant les lacs selon la surface en eau d'un même ensemble de masse d'eau.
+
+### Périmètre de la masse d'eau ou longueur du trait de côte
+
+```{r shoreline, eval=TRUE}
+shoreline<- shoreline_lake(lac)
+print(shoreline)
+```
+
+### Aire de la masse d'eau
+
+```{r area, eval=TRUE}
+area <- area_lake(lac)
+print(area)
+```
+
+
+### Shoreline developpement index (SDI)
+
+$SDI=\frac{Shoreline}{2*\sqrt(\pi*Area)}$
+
+Si le $SDI$ est proche de $1$ alors la masse d'eau est de forme de disque et au contraire plus le $SDI$ est grand plus le périmètre est considéré comme sinueux.
+
+```{r sdi, eval=TRUE}
+sdi <- sdi_lake(lac)
+print(sdi)
+```
+
+### Ligne de base ou longueur maximale de la masse d'eau
+
+A partir de la forme de la ME on définit la longueur maximale que l'on rencontre.
+
+### Largeurs équidistantes d'une distance le long de la ligne de base
+
+### Largeur minimale à partir de la ligne de base
+
+### ...
+
+## Méthode de Jensen
+
+La méthode de Jensen est une méthode géométrique de positionnement d'unités d'observation sur la masse d'eau. Cette méthode est utilisée dans les protocoles mises en place par l'équipe ECOVEA - Inrae (ex Irstea) afin d'étudier les communautés de macrophytes ou de phytobenthos sur la masse d'eau.
+
+Plusieurs étapes :
+
+- détermination du nombre de transects de base minimal (NTBM) 
+
+```{r tableau nbr transect base, echo=FALSE, eval =TRUE}
+data(nbr_transect_base)
+kable(nbr_transect_base)
+```
+
+- le nombre de transects de base (NTB)
+
+$NTB=NTBM+\frac{Shoreline-Sminis}{Smini}$
+
+- le coefficient de correction correspond au shoreline developpement index (SDI)
+
+$SDI=\frac{Shoreline}{2*\sqrt(\pi*Area)}$
+
+- le nombre de transects à retenir
+
+$NbrTransects=SDI*NTB$
+
+
+#### Exemple
+
+```{r Jensen, echo=FALSE, eval=TRUE, warning=FALSE}
+data(lac)
+baseline <- linemax_lake(lac)
+transects <- transects_ibml(lac,baseline)
+graph <- ggplot(data=lac)+
+  geom_sf(fill="lightblue")+
+  geom_sf(data=transects,aes(col=classe))+
+  #ggsn::north(data=lac, location = "bottomright", symbol = 15) 
+  theme(legend.position = "bottom")
+print(graph)
+``` 
+
+## Inlfuence de l'occupation du sol
+
