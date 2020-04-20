@@ -2,7 +2,7 @@
 
 ## Préambule
 
-### Instalation de `{lakemetrics}`
+### Installation de `{lakemetrics}`
 
 La version du paquet `{lakemetrics}` peut se télécharger via le site Github pour cela on aura besoin du paquet `{remotes}`: 
 
