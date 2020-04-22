@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 
 ## Préambule
 
-### Instalation de `{lakemetrics}`
+### Installation de `{lakemetrics}`
 
 La version du paquet `{lakemetrics}` peut se télécharger via le site Github pour cela on aura besoin du paquet `{remotes}`: 
 
@@ -142,5 +142,5 @@ graph <- ggplot(data=lac)+
 print(graph)
 ``` 
 
-## Inlfuence de l'occupation du sol
+## Influence de l'occupation du sol
 
