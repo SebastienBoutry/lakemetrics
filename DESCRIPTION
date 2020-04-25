@@ -25,6 +25,9 @@ Imports:
     purrr,
     tidyr,
     units,
-    udunits2
+    udunits2,
+    gstat,
+    mgcv,
+    raster
 Depends: 
     R (>= 2.10)

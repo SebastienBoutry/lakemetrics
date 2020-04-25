@@ -22,4 +22,5 @@ Création d'une zone tampon autour de la masse d'eau en prenant en compte le dé
 \examples{
 library(lakemetrics)
 data(lac)
+
 }

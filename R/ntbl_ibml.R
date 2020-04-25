@@ -9,6 +9,7 @@
 #' library(lakemetrics)
 #' ntb_ibml(lac)
 #'
+#' @importFrom magrittr %>%
 #' @importFrom udunits2 ud.convert
 #' @importFrom units set_units
 ntb_ibml <- function(sppolygon){

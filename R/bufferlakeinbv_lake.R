@@ -10,6 +10,8 @@
 #' @examples
 #' library(lakemetrics)
 #' data(lac)
+#'
+#' @importFrom magrittr %>%
 #' @importFrom dplyr filter
 #' @importFrom sf st_difference st_buffer st_geometry st_intersection st_make_valid
 lakebufferinbv_lake <- function(sppolygon, bv, distance) {
