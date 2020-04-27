@@ -18,22 +18,22 @@ lakebufferinbv_lake <- function(sppolygon, bv, distance) {
   if (! class(sppolygon)[1] %in% c("sfc_POLYGON","sf") ) {
     stop("la masse eau n'est pas un objet sf")
   }
-  if (!st_geometry_type(sppolygon, by_geometry = TRUE) %>%
+  if (!sf::st_geometry_type(sppolygon, by_geometry = TRUE) %>%
       as.character() %in% c("MULTIPOLYGON", "POLYGON")) {
     stop("la masse eau n'est pas de la classe MULTIPOLYGON ou POLYGON")
   }
-  buffer_output <- st_make_valid(
-    st_difference(
+  buffer_output <- sf::st_make_valid(
+    sf::st_difference(
     sppolygon %>%
-      st_cast("MULTILINESTRING") %>%
-      st_buffer(dist = distance) %>%
-      st_geometry(),
+      sf::st_cast("MULTILINESTRING") %>%
+      sf::st_buffer(dist = distance) %>%
+      sf::st_geometry(),
     sppolygon %>%
-      st_geometry()
+      sf::st_geometry()
   )) %>%
-    st_intersection(
-      st_make_valid(bv %>%
-      st_geometry())
+    sf::st_intersection(
+      sf::st_make_valid(bv %>%
+      sf::st_geometry())
       )
   return(buffer_output)
 }

@@ -12,18 +12,18 @@ class_lakes <- function(sppolygon) {
   if (! class(sppolygon)[1] %in% c("sfc_POLYGON","sf") ) {
     stop("la masse eau n'est pas un objet sf")
   }
-  if (!st_geometry_type(sppolygon, by_geometry = TRUE) %>%
+  if (!sf::st_geometry_type(sppolygon, by_geometry = TRUE) %>%
     as.character() %in% c("MULTIPOLYGON", "POLYGON")) {
     stop("la masse eau n'est pas de la classe MULTIPOLYGON ou POLYGON")
   }
   sp_polygon_return <- sppolygon %>%
-    st_geometry() %>%
-    st_cast("MULTIPOLYGON") %>%
-    st_cast("POLYGON") %>%
-    st_sf() %>%
-    mutate(id = 1:length(geometry)) %>%
-    mutate(area = st_area(geometry)) %>%
-    arrange(desc(area)) %>%
-    mutate(selection = 1:length(area))
+    sf::st_geometry() %>%
+    sf::st_cast("MULTIPOLYGON") %>%
+    sf::st_cast("POLYGON") %>%
+    sf::st_sf() %>%
+    dplyr::mutate(id = 1:length(geometry)) %>%
+    dplyr::mutate(area = sf::st_area(geometry)) %>%
+    dplyr::arrange(dplyr::desc(area)) %>%
+    dplyr::mutate(selection = 1:length(area))
   return(sp_polygon_return)
 }

@@ -14,11 +14,11 @@
 #' @importFrom units set_units
 ntb_ibml <- function(sppolygon){
   ##
-  nbr_transect_base <- tibble(Smini=set_units(c(0.05,0.40,0.8,1.6,3.2,6.4,12.8,25.6,51.20),km^2),
-                              Smax=set_units(c(0.39,0.79,1.59,3.19,6.39,12.79,25.59,51.19,102.39),km^2),
+  nbr_transect_base <- tibble::tibble(Smini=units::set_units(c(0.05,0.40,0.8,1.6,3.2,6.4,12.8,25.6,51.20),km^2),
+                              Smax=units::set_units(c(0.39,0.79,1.59,3.19,6.39,12.79,25.59,51.19,102.39),km^2),
                               NTBM=1:9)
   ##
-  area_ouput <- set_units(ud.convert(area_lake(sppolygon) %>%
+  area_ouput <- units::set_units(udunits2::ud.convert(area_lake(sppolygon) %>%
                                                         as.numeric(),
                                                       "m^2", "km^2"),
                                  km^2)

@@ -15,15 +15,15 @@ diffrasterpts <- function(depth_raster, pts_bathy) {
   if (!class(pts_bathy)[1] %in% c("sf")) {
     stop("l'objet pts_bathy n'est pas un objet sf")
   }
-  if (st_coordinates(pts_bathy) %>% ncol() != 3) {
+  if (sf::st_coordinates(pts_bathy) %>% ncol() != 3) {
     stop("l'objet pts_bathy n'est pas un objet à trois dimensions XYZ")
   }
   ##
-  pts_bathy_modify <- pts_depth %>%
-    cbind(., st_coordinates(.)) %>%
-    select(-X, -Y) %>%
-    rename(depth = Z) %>%
-    st_zm()
+  pts_bathy_modify <- pts_bathy %>%
+    cbind(., sf::st_coordinates(.)) %>%
+    dplyr::select(-X, -Y) %>%
+    dplyr::rename(depth = Z) %>%
+    sf::st_zm()
   ##
   raster::extract(depth_raster, # raster layer
     pts_bathy_modify, # SPDF with centroids for buffer
@@ -31,10 +31,10 @@ diffrasterpts <- function(depth_raster, pts_bathy) {
     fun = mean, # what to value to extract
     df = TRUE
   ) %>% # return a dataframe? %>%
-    mutate(depth = pts_depth %>%
-      st_drop_geometry() %>%
-      pull(depth)) %>%
-    mutate(diff = abs(depth - value)) %>%
-    pull(diff) %>%
-    sum(na.rm = TRUE) / nrow(pts_depth)
+    dplyr::mutate(depth = pts_bathy_modify %>%
+      sf::st_drop_geometry() %>%
+      dplyr::pull(depth)) %>%
+    dplyr::mutate(diff = abs(depth - value)) %>%
+    dplyr::pull(diff) %>%
+    sum(na.rm = TRUE) / nrow(pts_bathy)
 }

@@ -2,6 +2,7 @@
 #'
 #' @param sppolygon un objet sf correspondant un polygone de la masse d'eau
 #' @param pts_bathy une collection de points -objet sf- de dimension XYZ  ou Z : profondeur
+#' @param cellsize taille du pixel par défaut 10 m
 #'
 #' @return Bathymmétrie de la masse d'eau au format raster ; plusieurs algorithmes pour la création de la bathymétrie sont testés.
 #' \describe{
@@ -16,39 +17,39 @@
 #'
 #' @examples
 #' library(lakemetrics)
-#'
-#' @importFrom magrittr %>%
-#' @importFrom dplyr mutate rename select distinct_all filter pull group_by
-#' @importFrom gstat gstat
-#' @importFrom mgcv gam
-#' @importFrom purrr map
-#' @importFrom sf st_cast st_as_sf st_coordinates st_make_grid st_contains st_intersects st_buffer st_drop_geometry
-#' @importFrom stats predict
-#' @importFrom tidyr pivot_longer nest
+#' bathymetry_lake(lac,bathy)
 #'
 #' @references https://fishandwhistle.net/post/2019/bathymetry-lake-volume-estimation-using-r/
 #' @references https://fromthebottomoftheheap.net/2016/03/27/soap-film-smoothers/
-bathymetry_lake<- function(sppolygon,pts_bathy){
+#' @importFrom magrittr %>%
+#' @importFrom dplyr select rename mutate distinct_all filter pull group_by
+#' @importFrom gstat gstat
+#' @importFrom mgcv gam
+#' @importFrom purrr map
+#' @importFrom sf st_geometry_type st_coordinates st_zm st_cast st_as_sf st_make_grid st_contains st_intersects st_buffer st_drop_geometry
+#' @importFrom stats predict
+#' @importFrom tidyr pivot_longer nest
+bathymetry_lake<- function(sppolygon,pts_bathy,cellsize=10){
   if (! class(sppolygon)[1] %in% c("sfc_POLYGON","sf") ) {
     stop("la masse eau n'est pas un objet sf")
   }
-  if (!st_geometry_type(sppolygon, by_geometry = TRUE) %>%
+  if (!sf::st_geometry_type(sppolygon, by_geometry = TRUE) %>%
       as.character() %in% c("MULTIPOLYGON", "POLYGON")) {
     stop("la masse eau n'a pas d du type geom MULTIPOLYGON ou POLYGON")
   }
   if (! class(pts_bathy)[1] %in% c("sf") ) {
     stop("l'objet pts_bathy n'est pas un objet sf")
   }
-  if (st_coordinates(pts_bathy) %>% ncol()!=3) {
+  if (sf::st_coordinates(pts_bathy) %>% ncol()!=3) {
     stop("l'objet pts_bathy n'est pas un objet à trois dimensions XYZ")
   }
   ##
   ##
   pts_bathy_modify <- pts_bathy %>%
-    cbind(.,st_coordinates(.)) %>%
-    select(-X,-Y) %>%
-    rename(depth=Z) %>%
-    st_zm()
+    cbind(.,sf::st_coordinates(.)) %>%
+    dplyr::select(-X,-Y) %>%
+    dplyr::rename(depth=Z) %>%
+    sf::st_zm()
   ##
   ##
   boundary_points <- sf::st_cast(sppolygon, "POINT") %>%
@@ -63,7 +64,7 @@ bathymetry_lake<- function(sppolygon,pts_bathy){
     dplyr::distinct_all()
   ##
   grid <- sf::st_make_grid(sppolygon,
-                       cellsize = c(10, 10),
+                       cellsize = c(cellsize, cellsize),
                        what = "centers") %>%
     sf::st_as_sf() %>%
     dplyr::filter(sf::st_contains(lac, ., sparse = FALSE)) %>%
@@ -110,7 +111,7 @@ bathymetry_lake<- function(sppolygon,pts_bathy){
     ) %>%
     cbind(., sf::st_coordinates(.))
 
-  fit_gam_soap <- gam(
+  fit_gam_soap <- mgcv::gam(
     depth ~ s(X, Y, bs = "so", xt = list(bnd = gam_bound)),
     data = depths %>%
       dplyr::filter(source == "measured") %>%
@@ -130,7 +131,7 @@ bathymetry_lake<- function(sppolygon,pts_bathy){
   diff <- NULL
   for(i in grid_nested$name){
     depth_raster <- grid_nested %>% dplyr::filter(name==i) %>% dplyr::pull(depth_raster_output)
-    diff <- c(diff,diffrasterpts(depth_raster[[1]] , pts_bathy_modify))
+    diff <- c(diff,diffrasterpts(depth_raster[[1]] , pts_bathy))
   }
   names(diff) <- grid_nested$name
   best_select <- which.min(diff)
