@@ -5,12 +5,13 @@
 #'
 #' @return Bathymmétrie de la masse d'eau au format raster ; plusieurs algorithmes pour la création de la bathymétrie sont testés.
 #' \describe{
-#'   \item{IDW} {Inverse Distance Weighting}
+#'   \item{IDW} {Inverse Distance Weighting a pour principe que chaque point spatialisé de profondeur est un point relié autres points environnants, le poids de relation entre les points varie selon la distance entre les points (relation forte entre deux points proche et relation faible pour deux points distants).}
 #'   \item{TPRS} {Thin Plate Regression Spline}
 #'   \item{} {Soap Film Smooth}
 #' }
 #'
-#' Le choix se fait juste par l'écart le plus petit entre les pts_bathy et le modèle -en valeur absolue-.
+#' Le choix se fait juste par l'écart le plus petit entre les pts_bathy et le modèle -en valeur absolue-. Pour cela on utilise la fonction diffrasterpts.
+#'
 #' @export
 #'
 #' @examples
@@ -24,7 +25,9 @@
 #' @importFrom sf st_cast st_as_sf st_coordinates st_make_grid st_contains st_intersects st_buffer st_drop_geometry
 #' @importFrom stats predict
 #' @importFrom tidyr pivot_longer nest
+#'
 #' @references https://fishandwhistle.net/post/2019/bathymetry-lake-volume-estimation-using-r/
+#' @references https://fromthebottomoftheheap.net/2016/03/27/soap-film-smoothers/
 bathymetry_lake<- function(sppolygon,pts_bathy){
   if (! class(sppolygon)[1] %in% c("sfc_POLYGON","sf") ) {
     stop("la masse eau n'est pas un objet sf")
