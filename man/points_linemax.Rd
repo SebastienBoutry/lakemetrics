@@ -19,4 +19,5 @@ Répartition des points équidistants le long de longueur maximale de la masse d
 }
 \examples{
 library(lakemetrics)
+
 }

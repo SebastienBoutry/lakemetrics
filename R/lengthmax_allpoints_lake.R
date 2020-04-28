@@ -7,6 +7,8 @@
 #'
 #' @examples
 #' library(lakemetrics)
+#'
+#' @importFrom magrittr %>%
 #' @importFrom dplyr filter distinct
 #' @importFrom sf st_sf
 lengthmax_allpoints_lake <- function(linemaxpoints) {
@@ -19,8 +21,8 @@ lengthmax_allpoints_lake <- function(linemaxpoints) {
     # }
   ##
   linemax_return <- linemaxpoints %>%
-    filter(longueur == max(longueur)) %>%
-    st_sf() %>%
-    distinct()
+    dplyr::filter(longueur == max(longueur)) %>%
+    sf::st_sf() %>%
+    dplyr::distinct()
   return(linemax_return)
 }

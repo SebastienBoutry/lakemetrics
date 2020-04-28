@@ -13,6 +13,7 @@
 #' linemax <- linemax_lake(sppolygon=lac)
 #' allwidths_lake(sppolygon=lac, linemax=linemax, distance=100)
 #'
+#' @importFrom magrittr %>%
 #' @importFrom data.table rbindlist
 #' @importFrom dplyr filter group_by mutate
 #' @importFrom purrr pmap
@@ -22,7 +23,7 @@ allwidths_lake <- function(sppolygon,linemax, distance) {
   if (! class(sppolygon)[1] %in% c("sfc_POLYGON","sf") ) {
     stop("la masse eau n'est pas un objet sf")
   }
-  if (!st_geometry_type(sppolygon, by_geometry = TRUE) %>%
+  if (!sf::st_geometry_type(sppolygon, by_geometry = TRUE) %>%
       as.character() %in% c("MULTIPOLYGON", "POLYGON")) {
     stop("la masse eau n'est pas de la classe MULTIPOLYGON ou POLYGON")
   }
@@ -30,7 +31,7 @@ allwidths_lake <- function(sppolygon,linemax, distance) {
   # linemax <- linemax_lake(sppolygon)
   plan_eau <- sppolygon
   plan_eau_select <- class_lakes(sppolygon) %>%
-    filter(selection == 1)
+    dplyr::filter(selection == 1)
   # for a point in the base line
   tibble_perpendiculars <- points_linemax(linemax, distance)
 
@@ -51,10 +52,10 @@ allwidths_lake <- function(sppolygon,linemax, distance) {
   }
 
   perpendiculars <- rbindlist(data_line_perpendicular) %>%
-    mutate(id = 1:length(geometry)) %>%
-    st_sf() %>%
-    st_geometry() %>%
-    st_intersection(plan_eau_select %>% st_geometry()) %>%
-    st_sf()
+    dplyr::mutate(id = 1:length(geometry)) %>%
+    sf::st_sf() %>%
+    sf::st_geometry() %>%
+    sf::st_intersection(plan_eau_select %>% sf::st_geometry()) %>%
+    sf::st_sf()
   return(perpendiculars)
 }

@@ -17,4 +17,5 @@ Indice de complexité des rives -SDI-
 }
 \examples{
 library(lakemetrics)
+
 }

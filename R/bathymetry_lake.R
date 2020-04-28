@@ -21,6 +21,7 @@
 #'
 #' @references https://fishandwhistle.net/post/2019/bathymetry-lake-volume-estimation-using-r/
 #' @references https://fromthebottomoftheheap.net/2016/03/27/soap-film-smoothers/
+#'
 #' @importFrom magrittr %>%
 #' @importFrom dplyr select rename mutate distinct_all filter pull group_by
 #' @importFrom gstat gstat

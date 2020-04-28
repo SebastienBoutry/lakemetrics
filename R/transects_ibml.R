@@ -14,6 +14,7 @@
 #' transects <- transects_ibml(lac,baseline)
 #' transects
 #'
+#' @importFrom magrittr %>%
 #' @importFrom dplyr mutate rename filter select
 #' @importFrom sf st_geometry_type st_length
 transects_ibml<- function(sppolygon,linemax){

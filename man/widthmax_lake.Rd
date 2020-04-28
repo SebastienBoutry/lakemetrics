@@ -21,4 +21,5 @@ Largeur maximale de la masse d'eau selon la ligne de base -longueur maximale-
 }
 \examples{
 library(lakemetrics)
+
 }

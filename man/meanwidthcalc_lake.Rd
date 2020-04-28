@@ -17,4 +17,5 @@ Largeur moyenne calculée selon l'aire et la longueur maximale de la masse d'eau
 }
 \examples{
 library(lakemetrics)
+
 }

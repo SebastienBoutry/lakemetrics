@@ -21,4 +21,5 @@ Ligne perpendiculaire selon un point sur l
 }
 \examples{
 library(lakemetrics)
+
 }

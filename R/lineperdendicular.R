@@ -9,13 +9,15 @@
 #'
 #' @examples
 #' library(lakemetrics)
+#'
+#' @importFrom magrittr %>%
 #' @importFrom dplyr tibble mutate group_by summarize as_tibble
 #' @importFrom sf st_as_sf st_cast
 lineperdendicular <- function(sppolygon,linemax,X,Y) {
   if (! class(sppolygon)[1] %in% c("sfc_POLYGON","sf") ) {
     stop("la masse eau n'est pas un objet sf")
   }
-  if (!st_geometry_type(sppolygon, by_geometry = TRUE) %>%
+  if (!sf::st_geometry_type(sppolygon, by_geometry = TRUE) %>%
       as.character() %in% c("MULTIPOLYGON", "POLYGON")) {
     stop("la masse eau n'est pas de la classe MULTIPOLYGON ou POLYGON")
   }
@@ -23,20 +25,20 @@ lineperdendicular <- function(sppolygon,linemax,X,Y) {
   #   purrr::pmap(~c(...))
   ##
   vec <- sppolygon %>%
-    st_geometry() %>%
-    st_bbox()
+    sf::st_geometry() %>%
+    sf::st_bbox()
   x1 <- vec["xmin"]
   x2 <- vec["xmax"]
   ##
   data_coord <- linemax %>%
-    st_geometry() %>%
-    st_cast("POINT") %>%
-    st_coordinates() %>%
-    as_data_frame() %>%
-    arrange(desc(X))
+    sf::st_geometry() %>%
+    sf::st_cast("POINT") %>%
+    sf::st_coordinates() %>%
+    dplyr::as_data_frame() %>%
+    dplyr::arrange(dplyr::desc(X))
   ## coefficients
-  a <- coef(lm(Y ~ X, data = data_coord))["X"]
-  a0 <- as.vector(coef(lm(Y ~ X, data = data_coord))["(Intercept)"])
+  a <- stats::coef(stats::lm(Y ~ X, data = data_coord))["X"]
+  a0 <- as.vector(stats::coef(stats::lm(Y ~ X, data = data_coord))["(Intercept)"])
   b <- as.vector(-1 / a)
   # b0 <- coord$Y - (b * coord$X)
   b0 <- Y - (b * X)
@@ -47,7 +49,7 @@ lineperdendicular <- function(sppolygon,linemax,X,Y) {
     length.out = 100
   )) %>%
     dplyr::mutate(Y = X * b + b0) %>%
-    as_tibble() %>%
+    dplyr::as_tibble() %>%
     sf::st_as_sf(coords = c("X", "Y"), crs = 2154) %>%
     dplyr::mutate(id = 1) %>%
     dplyr::group_by(id) %>%

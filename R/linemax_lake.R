@@ -10,7 +10,7 @@
 #' data(lac)
 #' linemax_lake(lac)
 #'
-#' @importFrom data.table rbindlist
+#' @importFrom magrittr %>%
 #' @importFrom dplyr mutate group_by
 #' @importFrom purrr map2
 #' @importFrom sf st_geometry_type st_cast st_geometry st_sf
@@ -19,7 +19,7 @@ linemax_lake <- function(sppolygon) {
   if (! class(sppolygon)[1] %in% c("sfc_POLYGON","sf") ) {
     stop("la masse eau n'est pas un objet sf")
   }
-  if (!st_geometry_type(sppolygon, by_geometry = TRUE) %>%
+  if (!sf::st_geometry_type(sppolygon, by_geometry = TRUE) %>%
       as.character() %in% c("MULTIPOLYGON", "POLYGON")) {
     stop("la masse eau n'est pas de la classe MULTIPOLYGON ou POLYGON")
   }
@@ -28,16 +28,16 @@ linemax_lake <- function(sppolygon) {
   nest_point_longueur <- NULL
   ##
   points_lake <- sppolygon %>%
-    st_cast("MULTILINESTRING") %>%
-    st_geometry() %>%
-    st_cast("POINT") %>%
-    st_sf()
+    sf::st_cast("MULTILINESTRING") %>%
+    sf::st_geometry() %>%
+    sf::st_cast("POINT") %>%
+    sf::st_sf()
   ##
   nest_point_longueur <- points_lake %>%
-    mutate(id = 1:length(geometry)) %>%
-    group_by(id) %>%
-    nest() %>%
-    mutate(longueur = map2(data, points_lake, linemaxpoint_lake))
+    dplyr::mutate(id = 1:length(geometry)) %>%
+    dplyr::group_by(id) %>%
+    tidyr::nest() %>%
+    dplyr::mutate(longueur = purrr::map2(data, points_lake, linemaxpoint_lake))
   ##
   linemaxpoints <- rbindlist(nest_point_longueur$longueur)
   ##

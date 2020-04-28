@@ -19,4 +19,5 @@ Périmètre de la masse d'eau
 library(lakemetrics)
 data(lac)
 shoreline_lake(lac)
+
 }

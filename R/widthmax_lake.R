@@ -9,19 +9,21 @@
 #'
 #' @examples
 #' library(lakemetrics)
+#'
+#' @importFrom magrittr %>%
 #' @importFrom dplyr mutate filter
 #' @importFrom sf st_length
 widthmax_lake <- function(sppolygon,linemax,distance) {
   if (class(sppolygon)[1] %in% c("sfc_POLYGON","sf") ) {
     stop("la masse eau n'est pas un objet sf")
   }
-  if (!st_geometry_type(sppolygon, by_geometry = TRUE) %>%
+  if (!sf::st_geometry_type(sppolygon, by_geometry = TRUE) %>%
       as.character() %in% c("MULTIPOLYGON", "POLYGON")) {
     stop("la masse eau n'est pas de la classe MULTIPOLYGON ou POLYGON")
   }
   perpendiculars <- allwidths_lake(sppolygon,distance)  %>%
-    mutate(largeur = st_length(geometry)) %>%
-    mutate(selection = ifelse(largeur == max(largeur), "max", "no"))
+    dplyr::mutate(largeur = sf::st_length(geometry)) %>%
+    dplyr::mutate(selection = ifelse(largeur == max(largeur), "max", "no"))
   return(perpendiculars %>%
-           filter(selection == "max"))
+           dplyr::filter(selection == "max"))
 }

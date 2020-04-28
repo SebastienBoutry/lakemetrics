@@ -7,15 +7,17 @@
 #'
 #' @examples
 #' library(lakemetrics)
+#'
+#' @importFrom magrittr %>%
 #' @importFrom sf st_length
 meanwidthcalc_lake <- function(sppolygon) {
   if (! class(sppolygon)[1] %in% c("sfc_POLYGON","sf") ) {
     stop("la masse eau n'est pas un objet sf")
   }
-  if (!st_geometry_type(sppolygon, by_geometry = TRUE) %>%
+  if (!sf::st_geometry_type(sppolygon, by_geometry = TRUE) %>%
       as.character() %in% c("MULTIPOLYGON", "POLYGON")) {
     stop("la masse eau n'est pas de la classe MULTIPOLYGON ou POLYGON")
   }
-  meanwidthcalc_return <- area_lake(sppolygon) / (linemax_lake(sppolygon) %>% st_length())
+  meanwidthcalc_return <- area_lake(sppolygon) / (linemax_lake(sppolygon) %>% sf::st_length())
   return(meanwidthcalc_return)
 }

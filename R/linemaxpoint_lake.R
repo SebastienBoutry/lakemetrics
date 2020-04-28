@@ -8,8 +8,10 @@
 #'
 #' @examples
 #' library(lakemetrics)
-#' @importFrom dplyr filter mutate rename
-#' @importFrom sf st_nearest_points st_geometry st_cast st_sf st_length
+#'
+#' @importFrom  magrittr %>%
+#' @importFrom dplyr mutate filter rename
+#' @importFrom sf st_nearest_points st_sf st_length
 linemaxpoint_lake <- function(point_sf, points_lake) {
   # if (class(points_lake)[1] != "sf") {
   #   stop("points_lake n'est pas un objet sf")
@@ -27,12 +29,12 @@ linemaxpoint_lake <- function(point_sf, points_lake) {
   #   stop("point_sf n'est pas de la classe POINT")
   # }
   ##
-  st_nearest_points(
+  sf::st_nearest_points(
     point_sf,
     points_lake
   ) %>%
-    st_sf() %>%
-    mutate(longueur = st_length(geometry)) %>%
-    filter(longueur == max(longueur)) %>%
-    rename("geom_point" = "geometry")
+    sf::st_sf() %>%
+    dplyr::mutate(longueur = sf::st_length(geometry)) %>%
+    dplyr::filter(longueur == max(longueur)) %>%
+    dplyr::rename("geom_point" = "geometry")
 }

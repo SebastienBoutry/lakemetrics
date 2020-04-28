@@ -19,4 +19,5 @@ Longueur maximale pour un point spatialisé de la masse d'eau
 }
 \examples{
 library(lakemetrics)
+
 }

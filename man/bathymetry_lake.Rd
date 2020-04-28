@@ -4,12 +4,14 @@
 \alias{bathymetry_lake}
 \title{Bathymmétrie de la masse d'eau au format raster}
 \usage{
-bathymetry_lake(sppolygon, pts_bathy)
+bathymetry_lake(sppolygon, pts_bathy, cellsize = 10)
 }
 \arguments{
 \item{sppolygon}{un objet sf correspondant un polygone de la masse d'eau}
 
 \item{pts_bathy}{une collection de points -objet sf- de dimension XYZ  ou Z : profondeur}
+
+\item{cellsize}{taille du pixel par défaut 10 m}
 }
 \value{
 Bathymmétrie de la masse d'eau au format raster ; plusieurs algorithmes pour la création de la bathymétrie sont testés.

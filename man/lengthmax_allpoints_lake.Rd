@@ -17,4 +17,5 @@ Comparaison des longueurs pour chaque pont afin de déterminer la longueur maxim
 }
 \examples{
 library(lakemetrics)
+
 }

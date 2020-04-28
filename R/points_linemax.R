@@ -8,6 +8,8 @@
 #'
 #' @examples
 #' library(lakemetrics)
+#'
+#' @importFrom  magrittr %>%
 #' @importFrom dplyr as_data_frame arrange desc mutate
 #' @importFrom sf st_geometry st_cast st_coordinates st_segmentize
 #' @importFrom stats coef lm
@@ -26,15 +28,15 @@ points_linemax <- function(linemax, distance) {
   # b <- as.vector(-1 / a)
   # b0 <- data_coord$Y - (b * data_coord$X)
   ##
-  tibble_perpendiculars <- st_segmentize(
+  tibble_perpendiculars <- sf::st_segmentize(
     linemax %>%
-      st_geometry(),
+      sf::st_geometry(),
     set_units(distance, m)
   ) %>%
-    st_cast("POINT") %>%
-    st_coordinates() %>%
-    as_data_frame() %>%
-    mutate(id = 1:length(X))
+    sf::st_cast("POINT") %>%
+    sf::st_coordinates() %>%
+    dplyr::as_data_frame() %>%
+    dplyr::mutate(id = 1:length(X))
     # mutate(
     #   b = b,
     #   b0 = Y - (b * X)
