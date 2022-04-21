@@ -14,6 +14,7 @@
 #' @importFrom sf st_geometry st_cast st_coordinates st_segmentize
 #' @importFrom stats coef lm
 #' @importFrom units set_units
+
 points_linemax <- function(linemax, distance) {
   ##
   # data_coord <- linemax %>%

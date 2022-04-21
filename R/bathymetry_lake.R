@@ -23,7 +23,7 @@
 #' @references https://fromthebottomoftheheap.net/2016/03/27/soap-film-smoothers/
 #'
 #' @importFrom magrittr %>%
-#' @importFrom dplyr select rename mutate distinct_all filter pull group_by
+#' @importFrom dplyr select rename mutate distinct_all filter pull group_by bind_rows
 #' @importFrom gstat gstat
 #' @importFrom mgcv gam
 #' @importFrom purrr map
@@ -31,7 +31,7 @@
 #' @importFrom stats predict
 #' @importFrom tidyr pivot_longer nest
 bathymetry_lake<- function(sppolygon,pts_bathy,cellsize=10){
-  if (! class(sppolygon)[1] %in% c("sfc_POLYGON","sf") ) {
+  if (! class(sppolygon)[1] %in% c("sfc_POLYGON","sf","sfc_MULTIPOLYGON") ) {
     stop("la masse eau n'est pas un objet sf")
   }
   if (!sf::st_geometry_type(sppolygon, by_geometry = TRUE) %>%
@@ -49,18 +49,19 @@ bathymetry_lake<- function(sppolygon,pts_bathy,cellsize=10){
   pts_bathy_modify <- pts_bathy %>%
     cbind(.,sf::st_coordinates(.)) %>%
     dplyr::select(-X,-Y) %>%
-    dplyr::rename(depth=Z) %>%
+    dplyr::rename("depth"="Z") %>%
+    dplyr::mutate(source="measured") %>%
     sf::st_zm()
   ##
   ##
   boundary_points <- sf::st_cast(sppolygon, "POINT") %>%
     sf::st_as_sf() %>%
+    dplyr::rename("geometry"="x") %>%
     dplyr::mutate(source= "boundary",depth = 0) %>%
-    dplyr::rename(geometry=x) %>%
     dplyr::select(source,depth,geometry)
   ##
-  depths <- rbind(boundary_points,  pts_bathy_modify %>%
-                    dplyr::select(source,depth,geometry)) %>%
+  depths <- dplyr::bind_rows(boundary_points,  pts_bathy_modify) %>%
+    dplyr::select(source,depth,geometry) %>%
     cbind(., sf::st_coordinates(.)) %>%
     dplyr::distinct_all()
   ##
@@ -68,9 +69,9 @@ bathymetry_lake<- function(sppolygon,pts_bathy,cellsize=10){
                        cellsize = c(cellsize, cellsize),
                        what = "centers") %>%
     sf::st_as_sf() %>%
-    dplyr::filter(sf::st_contains(lac, ., sparse = FALSE)) %>%
+    dplyr::filter(sf::st_contains(sppolygon, ., sparse = FALSE)) %>%
     cbind(., sf::st_coordinates(.)) %>%
-    dplyr::rename(geometry=x)
+    dplyr::rename("geometry"="x")
   ##
 
   # Inverse Distance Weighting (IDW)
