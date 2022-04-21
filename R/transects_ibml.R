@@ -26,7 +26,7 @@ transects_ibml<- function(sppolygon,linemax){
     stop("la masse eau n'est pas de la classe MULTIPOLYGON ou POLYGON")
   }
   if(is.na(ntb_ibml(sppolygon))){
-    distance <-50
+    distance <-150
   }else{
     distance <- (linemax %>% sf::st_length()/(ntb_ibml(sppolygon))) %>% as.numeric()
   }
