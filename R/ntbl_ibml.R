@@ -14,17 +14,21 @@
 #' @importFrom units set_units
 ntb_ibml <- function(sppolygon){
   ##
-  nbr_transect_base <- tibble::tibble(Smini=units::set_units(c(0.001,0.05,0.40,0.8,1.6,3.2,6.4,12.8,25.6,51.20),km^2),
-                              Smax=units::set_units(c(0.39,0.39,0.79,1.59,3.19,6.39,12.79,25.59,51.19,102.39),km^2),
-                              NTBM=c(0.5,1:9))
+  nbr_transect_base <- tibble::tibble(Smini=units::set_units(c(0.05,0.40,0.8,1.6,3.2,6.4,12.8,25.6,51.20),km^2),
+                              Smax=units::set_units(c(0.39,0.79,1.59,3.19,6.39,12.79,25.59,51.19,102.39),km^2),
+                              NTBM=c(1:9))
   ##
   area_ouput <- units::set_units(udunits2::ud.convert(area_lake(sppolygon) %>%
                                                         as.numeric(),u1 = "m^2",u2 = "km^2"),
                                  "km^2")
+  if(area_ouput<min(nbr_transect_base$Smini)){
+    ntbTRUE_output <- NA
+  }else{
   sit <- which((area_ouput > nbr_transect_base$Smini) +  (area_ouput <= nbr_transect_base$Smax)==2)
   ntb_output <- nbr_transect_base$NTBM[sit]+((area_ouput-nbr_transect_base$Smini[sit])/nbr_transect_base$Smini[sit]) %>% as.numeric()
   coeff <- sdi_lake(sppolygon) %>% as.numeric()
   ntbTRUE_output <- coeff*ntb_output
+  }
   ##
   return(ntbTRUE_output)
 }

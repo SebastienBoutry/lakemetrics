@@ -25,7 +25,11 @@ transects_ibml<- function(sppolygon,linemax){
       as.character() %in% c("MULTIPOLYGON", "POLYGON")) {
     stop("la masse eau n'est pas de la classe MULTIPOLYGON ou POLYGON")
   }
-  distance <- (linemax %>% sf::st_length()/(ntb_ibml(sppolygon))) %>% as.numeric()
+  if(is.na(ntb_ibml(sppolygon))){
+    distance <-50
+  }else{
+    distance <- (linemax %>% sf::st_length()/(ntb_ibml(sppolygon))) %>% as.numeric()
+  }
   grid_output <- allwidths_lake(sppolygon,linemax,distance) %>%
     dplyr::mutate(classe="transects") %>%
     rbind(linemax %>%
