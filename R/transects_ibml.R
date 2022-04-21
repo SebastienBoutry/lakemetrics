@@ -29,6 +29,7 @@ transects_ibml<- function(sppolygon,linemax){
   grid_output <- allwidths_lake(sppolygon,linemax,distance) %>%
     dplyr::mutate(classe="transects") %>%
     rbind(linemax %>%
+            dplyr::select(-longueur) %>%
             dplyr::rename("geometry"="geom_point") %>%
             dplyr::mutate(classe="ligne de base")) %>%
     dplyr::mutate(longueur=sf::st_length(geometry) %>% as.numeric()) %>%
