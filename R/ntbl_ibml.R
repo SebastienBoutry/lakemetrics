@@ -21,7 +21,7 @@ ntb_ibml <- function(sppolygon){
   area_ouput <- units::set_units(udunits2::ud.convert(area_lake(sppolygon) %>%
                                                         as.numeric(),
                                                       "m^2", "km^2"),
-                                 km^2)
+                                 "km^2")
   sit <- which((area_ouput > nbr_transect_base$Smini) +  (area_ouput <= nbr_transect_base$Smax)==2)
   ntb_output <- nbr_transect_base$NTBM[sit]+((area_ouput-nbr_transect_base$Smini[sit])/nbr_transect_base$Smini[sit]) %>% as.numeric()
   coeff <- sdi_lake(sppolygon) %>% as.numeric()
