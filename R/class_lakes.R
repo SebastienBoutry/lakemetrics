@@ -8,6 +8,8 @@
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate arrange desc
 #' @importFrom sf st_geometry_type st_geometry st_cast st_sf st_area
+#'
+#'
 class_lakes <- function(sppolygon) {
   if (! class(sppolygon)[1] %in% c("sfc_POLYGON","sf") ) {
     stop("la masse eau n'est pas un objet sf")
@@ -25,5 +27,6 @@ class_lakes <- function(sppolygon) {
     dplyr::mutate(area = sf::st_area(geometry)) %>%
     dplyr::arrange(dplyr::desc(area)) %>%
     dplyr::mutate(selection = 1:length(area))
+  ##
   return(sp_polygon_return)
 }

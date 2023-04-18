@@ -112,7 +112,7 @@ Plusieurs étapes :
 
 ```{r tableau nbr transect base, echo=FALSE, eval =TRUE}
 data(nbr_transect_base)
-kable(nbr_transect_base)
+gt::gt(nbr_transect_base)
 ```
 
 - le nombre de transects de base (NTB)

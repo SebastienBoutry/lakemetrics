@@ -36,7 +36,7 @@ points_linemax <- function(linemax, distance) {
   ) %>%
     sf::st_cast("POINT") %>%
     sf::st_coordinates() %>%
-    dplyr::as_data_frame() %>%
+    tidyr::as_tibble() %>%
     dplyr::mutate(id = 1:length(X))
     # mutate(
     #   b = b,

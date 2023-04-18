@@ -34,7 +34,7 @@ lineperdendicular <- function(sppolygon,linemax,X,Y) {
     sf::st_geometry() %>%
     sf::st_cast("POINT") %>%
     sf::st_coordinates() %>%
-    dplyr::as_data_frame() %>%
+    tidyr::as_tibble() %>%
     dplyr::arrange(dplyr::desc(X))
   ## coefficients
   a <- stats::coef(stats::lm(Y ~ X, data = data_coord))["X"]
@@ -49,7 +49,7 @@ lineperdendicular <- function(sppolygon,linemax,X,Y) {
     length.out = 100
   )) %>%
     dplyr::mutate(Y = X * b + b0) %>%
-    dplyr::as_tibble() %>%
+    tidyr::as_tibble() %>%
     sf::st_as_sf(coords = c("X", "Y"), crs = 2154) %>%
     dplyr::mutate(id = 1) %>%
     dplyr::group_by(id) %>%

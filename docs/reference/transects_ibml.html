@@ -81,9 +81,16 @@
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">lac</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">baseline</span> <span class="op">&lt;-</span> <span class="fu"><a href="linemax_lake.html">linemax_lake</a></span><span class="op">(</span><span class="va">lac</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">transects</span> <span class="op">&lt;-</span> <span class="fu">transects_ibml</span><span class="op">(</span><span class="va">lac</span>,<span class="va">baseline</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in geos_op2_geom("intersection", x, y, ...):</span> st_crs(x) == st_crs(y) is not TRUE</span>
 <span class="r-in"><span><span class="va">transects</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'transects' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Simple feature collection with 3 features and 1 field</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Geometry type: LINESTRING</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Dimension:     XY</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Bounding box:  xmin: 686429.6 ymin: 6484109 xmax: 687127.7 ymax: 6484867</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Projected CRS: RGF93 v1 / Lambert-93</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          classe                       geometry</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     transects LINESTRING (686429.6 648444...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     transects LINESTRING (686561.2 648418...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 ligne de base LINESTRING (686561.5 648486...</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

@@ -69,7 +69,10 @@ bathymetry_lake<- function(sppolygon,pts_bathy,cellsize=10){
                        cellsize = c(cellsize, cellsize),
                        what = "centers") %>%
     sf::st_as_sf() %>%
-    dplyr::filter(sf::st_contains(sppolygon, ., sparse = FALSE)) %>%
+    st_intersection(sppolygon) %>%
+    # dplyr::filter(sf::st_contains(sppolygon,
+    #                               .,
+    #                               sparse = FALSE)) %>%
     cbind(., sf::st_coordinates(.)) %>%
     dplyr::rename("geometry"="x")
   ##
@@ -103,21 +106,24 @@ bathymetry_lake<- function(sppolygon,pts_bathy,cellsize=10){
     what = "centers"
   ) %>%
     sf::st_as_sf() %>%
-    dplyr::filter(sf::st_contains(sppolygon, x, sparse = FALSE)) %>%
-    dplyr::filter(
-      !sf::st_intersects(
-        sppolygon %>% sf::st_cast("LINESTRING") %>% sf::st_buffer(10),
-        x,
-        sparse = FALSE
-      )
-    ) %>%
+    st_intersection(sppolygon) %>%
+    # dplyr::filter(sf::st_contains(sppolygon, x, sparse = FALSE)) %>%
+    st_difference(sppolygon %>% sf::st_cast("LINESTRING") %>% sf::st_buffer(10)) %>%
+    # dplyr::filter(
+    #   !sf::st_intersects(
+    #     sppolygon %>% sf::st_cast("LINESTRING") %>% sf::st_buffer(10),
+    #     x,
+    #     sparse = FALSE
+    #   )
+    # ) %>%
     cbind(., sf::st_coordinates(.))
 
   fit_gam_soap <- mgcv::gam(
     depth ~ s(X, Y, bs = "so", xt = list(bnd = gam_bound)),
     data = depths %>%
       dplyr::filter(source == "measured") %>%
-      dplyr::filter(sf::st_contains(sppolygon, geometry, sparse = FALSE)),
+      st_intersection(sppolygon),
+      # dplyr::filter(sf::st_contains(sppolygon, geometry, sparse = FALSE)),
     method = "REML",
     knots = knot_points
   )

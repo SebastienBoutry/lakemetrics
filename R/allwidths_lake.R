@@ -50,12 +50,16 @@ allwidths_lake <- function(sppolygon,linemax, distance) {
                                                       tibble_perpendiculars$X[i],
                                                       tibble_perpendiculars$Y[i])
   }
+  plan_eau_select<-plan_eau_select %>%
+    sf::st_geometry() |>
+    sf::st_transform(2154)
 
-  perpendiculars <- rbindlist(data_line_perpendicular) %>%
+  perpendiculars <- bind_rows(data_line_perpendicular) %>%
     dplyr::mutate(id = 1:length(geometry)) %>%
     sf::st_sf() %>%
     sf::st_geometry() %>%
-    sf::st_intersection(plan_eau_select %>% sf::st_geometry()) %>%
+    sf::st_transform(2154) |>
+    sf::st_intersection(plan_eau_select) %>%
     sf::st_sf()
   return(perpendiculars)
 }
