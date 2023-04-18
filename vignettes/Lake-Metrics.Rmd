@@ -35,7 +35,8 @@ Les paquets suivants `{ggplot2}` et `{ggsn}` sont nécessaires pour les réprés
 
 ```{r packages, eval=TRUE, echo=FALSE, warning=FALSE}
 require(ggplot2)
-library(kableExtra)
+# library(kableExtra)
+library(gt)
 require(magrittr)
 require(ggsn)
 require(lakemetrics)

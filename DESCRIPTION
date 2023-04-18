@@ -28,6 +28,8 @@ Imports:
     udunits2,
     gstat,
     mgcv,
-    raster
+    raster,
+    ggplot2,
+    gt
 Depends: 
     R (>= 2.10)
