@@ -30,6 +30,7 @@ Imports:
     mgcv,
     raster,
     ggplot2,
-    gt
+    gt,
+    ggsn
 Depends: 
     R (>= 2.10)

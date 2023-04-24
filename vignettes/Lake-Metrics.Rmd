@@ -143,5 +143,18 @@ graph <- ggplot(data=lac)+
 print(graph)
 ``` 
 
+```{r echo=FALSE,eval=TRUE}
+transects |> 
+  dplyr::filter(classe %in% "transects") |> 
+  sf::st_buffer(dist=0.01) |>
+  sf::st_cast("MULTILINESTRING") |> 
+  sf::st_intersection(lac |> 
+                        sf::st_transform(2154) |> 
+                        sf::st_cast("MULTILINESTRING")) |> 
+  sf::st_cast("POINT")
+```
+
+
+
 ## Influence de l'occupation du sol
 

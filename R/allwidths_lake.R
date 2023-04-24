@@ -50,7 +50,7 @@ allwidths_lake <- function(sppolygon,linemax, distance) {
                                                       tibble_perpendiculars$X[i],
                                                       tibble_perpendiculars$Y[i])
   }
-  plan_eau_select<-plan_eau_select %>%
+  plan_eau_select <- plan_eau_select %>%
     sf::st_geometry() |>
     sf::st_transform(2154)
 
