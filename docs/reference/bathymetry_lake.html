@@ -97,9 +97,32 @@ Soap Film Smooth
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">lakemetrics</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">bathymetry_lake</span><span class="op">(</span><span class="va">lac</span>,<span class="va">bathy</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in stopifnot(!inherits(x, "sf"), !missing(sf_column_name), !missing(agr)):</span> <span style="color: #00BBBB;">ℹ</span> In argument: `sf::st_contains(sppolygon, ., sparse = FALSE)`.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error:</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> `..1` must be a logical vector, not a logical matrix.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [inverse distance weighted interpolation]</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>attribute variables are assumed to be spatially constant throughout all geometries</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>attribute variables are assumed to be spatially constant throughout all geometries</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>attribute variables are assumed to be spatially constant throughout all geometries</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There was 1 warning in `dplyr::mutate()`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `depth_raster_output = purrr::map(data, rasterizeptsbathy)`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In group 1: `name = "GAM_Soap"`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning in `new_CppObject_xp()`:</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> GDAL Message 1: +init=epsg:XXXX syntax is deprecated. It might return a CRS with a non-EPSG compliant axis order.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Simple feature collection with 5141 features and 3 fields</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Geometry type: POINT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Dimension:     XY</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Bounding box:  xmin: 686404.1 ymin: 6484050 xmax: 687144.1 ymax: 6484900</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Projected CRS: RGF93 v1 / Lambert-93</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> First 10 features:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       value        X       Y                 geometry</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  3.375144 686764.1 6484050 POINT (686764.1 6484050)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  3.640453 686774.1 6484050 POINT (686774.1 6484050)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  4.599929 686784.1 6484050 POINT (686784.1 6484050)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  4.569227 686794.1 6484050 POINT (686794.1 6484050)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  3.428421 686804.1 6484050 POINT (686804.1 6484050)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  3.389413 686814.1 6484050 POINT (686814.1 6484050)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  3.529544 686724.1 6484060 POINT (686724.1 6484060)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  4.998648 686734.1 6484060 POINT (686734.1 6484060)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  5.717455 686744.1 6484060 POINT (686744.1 6484060)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 6.586077 686754.1 6484060 POINT (686754.1 6484060)</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
